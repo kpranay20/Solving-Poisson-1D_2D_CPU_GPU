@@ -1,15 +1,10 @@
 # Finite Element Solution of the Poisson Equation  
-### From CPU Prototypes to MPI + GPU Acceleration
 
 ## Overview
 
-This repository documents the progressive development of a **finite element solver for the Poisson equation**, starting from simple CPU-based implementations and extending to parallel, GPU-accelerated solvers using PETSc.
+This repository documents the development of a **finite element solver for the Poisson equation**, starting from simple CPU-based implementations and extending to parallel and later GPU-accelerated solvers using PETSc.
 
-The same mathematical problem is solved across multiple programming languages and hardware architectures in order to:
-- verify numerical correctness,
-- study performance scaling,
-- and understand the practical challenges of MPI and GPU-enabled solvers.
-
+The same mathematical problem is solved across multiple programming languages and hardware architectures in order to verify the numerical correctness and study performance scaling in MPI and GPU solvers.
 
 
 ## Problem Description
@@ -18,37 +13,23 @@ We consider the Poisson equation
 
 $$\nabla^2 u(\mathbf{x}) = f(\mathbf{x})$$
 
-on one- and two-dimensional domains with Dirichlet boundary conditions.
-
-The problem is discretized using the **finite element method (FEM)** with low-order basis functions and explicit matrix assembly.
-
-Full mathematical formulation and discretization details are provided in the documentation.
+on one- and two-dimensional domains with Dirichlet boundary conditions. The problem is discretized using the finite element method (FEM) with low-order basis functions and explicit matrix assembly. Full mathematical formulation and discretization details are provided in the documentation.
 
 
 
 ## Implementation Workflow
 
-The solver is developed in a staged manner:
+The solver is developed in the following manner:
 
 1. **Python (NumPy, CPU)**
-   - Reference implementation
-   - Verification and debugging
-   - Grid convergence studies
 
-2. **Python (CuPy, GPU)**
-   - Direct GPU acceleration of the FEM solver
-   - Assessment of GPU performance without MPI
+2. **Python (CuPy, GPU)**: GPU Implementation in Python (Without MPI)
 
-3. **Fortran + LAPACK (CPU)**
-   - High-performance serial solver
-   - Numerical equivalence with Python implementations
+3. **Fortran + LAPACK (CPU)**: Porting the code to FORTRAN and implementing with CPU (still serial solvers)
 
-4. **Fortran + PETSc (MPI + CUDA)**
-   - Distributed memory parallelism
-   - GPU-enabled sparse linear solvers
-   - Strong scaling and performance analysis
+4. **Fortran + PETSc (MPI + CUDA)**: Using distributed memory parallelism and linear solvers enabled by GPU
 
-Each stage solves the *same mathematical problem* to ensure consistency and traceability.
+Again, each stage solves the same mathematical problem to ensure consistency and traceability.
 
 
 
@@ -58,28 +39,17 @@ Each stage solves the *same mathematical problem* to ensure consistency and trac
 poisson-fem/
 │
 ├── README.md
-├── docs/
-│   ├── 00_problem_statement.md
-│   ├── 01_fem_formulation.md
-│   ├── 02_grid_discretization.md
-│   ├── 03_python_cpu_implementation.md
-│   ├── 04_python_gpu_cupy.md
-│   ├── 05_fortran_serial_lapack.md
-│   ├── 06_fortran_petsc_mpi_gpu.md
-│   ├── 07_verification_validation.md
-│   ├── 08_performance_analysis.md
-│   └── 09_limitations_future_work.md
-│
 ├── python/
-│   ├── poisson_1d_cpu.py
-│   ├── poisson_2d_cpu.py
-│   ├── poisson_2d_cupy.py
-│   └── mesh_utils.py
+│   ├── 1d_cpu.ipynb
+│   ├── 2d_cpu.ipynb
+│   ├── cpu_vs_gpu_cupy.ipynb
 │
 ├── fortran/
-│   ├── poisson_1d_lapack.f90
-│   ├── poisson_2d_lapack.f90
-│   ├── poisson_2d_petsc.f90
+│   ├── 1D_scratch.f90
+│   ├── 1D_random_grid.f90
+│   ├── 2d_no_mpi.f90
+│   ├── 2d_cpu_parallelize.F90
+│   ├── petsc_gpu.f90
 │   └── Makefile
 │
 ├── scripts/
@@ -99,6 +69,3 @@ poisson-fem/
     └── petsc_config.txt
 ```
 
-## Acknowledgments
-
-This README was created with the help of ChatGPT. All technical content, implementation details and project decisions remain my own.
