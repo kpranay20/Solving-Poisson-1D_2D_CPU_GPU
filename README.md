@@ -70,9 +70,9 @@ poisson-fem/
 ```
 ## Motivation
 
-Many finite element formulations produce large sparse linear systems that become computationally expensive as the problem size increases. While dense matrix implementations are suitable for small-scale problems and educational purposes, practical scientific simulations works with sparse storage formats and parallel algorithms to efficiently utilize new-age computing hardware.
+Many finite element formulations produce large sparse linear systems that become computationally expensive as the problem size increases. While dense matrix implementations could be used for small-scale problems, scientific simulations works with sparse storage formats and parallel algorithms to efficiently use new-age computing hardware.
 
-This project explores the complete workflow of transitioning from a basic serial finite element implementation to a high-performance solver by leveraging PETSc for sparse matrix assembly, Krylov-based linear solvers, and MPI-enabled distributed parallelism. Building upon this foundation, GPU acceleration is introduced through PETSc's CUDA backend, enabling faster execution on heterogeneous HPC systems without requiring significant changes to the application code.
+This project explores the complete workflow of transitioning from a basic serial finite element implementation to a high-performance solver by leveraging CuPy for sparse matrix assembly, Krylov-based linear solvers, and MPI-enabled distributed parallelism. Building upon this foundation, GPU acceleration is introduced through PETSc's CUDA backend, enabling faster execution on heterogeneous HPC systems without requiring significant changes to the application code.
 
 The techniques developed here form the computational basis for accelerating plasma physics applications, particularly gyrokinetic simulations used in magnetic confinement fusion research. Codes such as G2C3 solve Poisson-like equations as part of their self-consistent field calculations, making sparse linear algebra and multi-GPU parallelism important for reducing simulation time and helping with higher-resolution studies of tokamak plasmas.
 
