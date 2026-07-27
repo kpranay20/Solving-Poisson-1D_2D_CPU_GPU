@@ -177,7 +177,7 @@ program petsc_parallel
   if (rank == 0) then
     call VecGetArrayF90(x_seq, xarr, ierr)
 
-    open(unit=10, file='results_petsc.csv', status='replace', action='write')
+    open(unit=10, file='2D_cpu_parallelize.csv', status='replace', action='write')
     write(10,'(A)') 'Point_Index,X,Y,U_Numerical,U_Analytical,Error'
     do gi = 1, n
       x = points(gi,1); y = points(gi,2)

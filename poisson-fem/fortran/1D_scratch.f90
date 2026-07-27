@@ -1,3 +1,5 @@
+! Run with gfortran 1D_scratch.f90 -o scratch
+
 program fem_poisson
     implicit none
     integer, parameter :: n = 101   ! 'parameter' make 'n' un-assignable for later   
@@ -46,14 +48,14 @@ program fem_poisson
     end do
 
     ! Write results to file
-    open(unit=10, file="solution.dat", status="replace", action="write")
+    open(unit=10, file="1D_scratch.dat", status="replace", action="write")
     write(10, '(A)') "#   x        FEM_Solution     Analytical_Solution"
     do i = 1, n
         write(10,'(F10.5, 3X, F15.8, 3X, F15.8)') x(i), u(i), u_exact(i)
     end do
     close(10)
 
-    print *, "Results written to solution.dat"
+    print *, "Results written to 1D_scratch.dat"
 
 contains
 

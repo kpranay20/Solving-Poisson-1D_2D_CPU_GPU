@@ -1,4 +1,4 @@
-!Run with:  gfortran fem_poisson.f90 -llapack -lblas -o fem_poisson
+!Run with:  gfortran 2D_no_mpi.f90 -llapack -lblas -o fem_poisson
 
 program fem_poisson
     implicit none
@@ -132,7 +132,7 @@ program fem_poisson
     
     call write_results_csv(points, u, u_exact, num_points)
     
-    print *, 'Results written to results.csv'
+    print *, 'Results written to 2D_no_mpi.csv'
 
 contains
 
@@ -205,7 +205,7 @@ contains
         real(dp), intent(in) :: points(n, 2), u(n), u_exact(n)
         integer :: i
         
-        open(unit=10, file='results.csv', status='replace')
+        open(unit=10, file='2D_no_mpi.csv', status='replace')
         write(10, '(A)') 'Point_Index,X_Coordinate,Y_Coordinate,U_Numerical,U_Analytical,Error'
         
         do i = 1, n
