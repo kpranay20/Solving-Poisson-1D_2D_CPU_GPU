@@ -19,15 +19,17 @@ on one- and two-dimensional domains with Dirichlet boundary conditions. The prob
 
 ## Implementation Workflow
 
-The solver is developed in the following manner:
+The solver is developed in the following manner (Wherever needed, job scripts have also been attached with the name corresponding to the source file replace with ".sh" in the directory: poisson-fem/jobscripts):
 
 1. **Python (NumPy, CPU)**
 
 2. **Python (CuPy, GPU)**: GPU Implementation in Python (Without MPI)
 
-3. **Fortran + LAPACK (CPU)**: Porting the code to FORTRAN and implementing with CPU (still serial solvers)
+3. **Fortran + LAPACK (CPU)**: Porting the code to FORTRAN and implementing with CPU (still serial solvers). The first three files in the poisson-fem/fortran: "1D_scratch.f90", "1D_random_grid.f90" and "2d_no_mpi.f90" explores this progressively.
 
-4. **Fortran + PETSc (MPI + CUDA)**: Using distributed memory parallelism and linear solvers enabled by GPU
+4. **Fortran + PETSc (MPI + CUDA)**: Using distributed memory parallelism and linear solvers enabled by GPU. In the directory "poisson-fem/fortran", we implement this progressively. Beginning with mpi paralleization introduction using CPU through the code in "2d_cpu_parallelize.F90" as the file name suggests. We then move on to the GPU implementation of the same code. Leveraging PETSc would be very useful here since it helps us skip many steps to directly implement the poisson solver giving the flexibility to execute it with mutiple CPU or GPU nodes. "petsc_gpu.F90" does the work effeciently.
+
+   The _final opus_ of the repo ends with leveraging all the PETSc flags and features at the best and solving the poisson solver with the flexibility of execution in CPU or GPU **and having multiple source terms**. The addition of the **multiple soruce terms** instead of one makes the task bit more difficult but using additional variables, redeifing the communicators and making changes to the corresponding job scripts help achieve the work.
 
 Again, each stage solves the same mathematical problem to ensure consistency and traceability.
 
@@ -49,14 +51,14 @@ poisson-fem/
 │   ├── 1D_random_grid.f90
 │   ├── 2d_no_mpi.f90
 │   ├── 2d_cpu_parallelize.F90
-│   ├── petsc_gpu.f90
-│   └── Makefile
+│   ├── petsc_gpu.F90
+│   └── multi_probs.F90
 │
 ├── scripts/
-│   ├── run_python_cpu.sh
-│   ├── run_python_gpu.sh
-│   ├── run_petsc_cpu.sh
-│   ├── run_petsc_gpu.sh
+│   ├── 1D_scratch.sh
+│   ├── 2d_cpu_parallelize.sh
+│   ├── petsc_gpu.sh
+│   ├── multi_probs.sh
 │
 ├── results/
 │   ├── figures/
@@ -68,7 +70,7 @@ poisson-fem/
     ├── cuda_info.txt
     └── petsc_config.txt
 ```
-## Motivation
+## Motivation and Goal
 
 Many finite element formulations produce large sparse linear systems that become computationally expensive as the problem size increases. While dense matrix implementations could be used for small-scale problems, scientific simulations works with sparse storage formats and parallel algorithms to efficiently use new-age computing hardware.
 
@@ -83,3 +85,7 @@ Although this repository demonstrates these ideas using the classical Poisson eq
 - GPU acceleration
 
 are directly applicable to gyrokinetic Poisson solvers used in plasma physics and tokamak simulation codes.
+
+**The ultimate goal is to extend these methodologies to the gyrokinetic Poisson solver used in tokamak plasma simulations. In such simulations, the computational domain can be decomposed into multiple independent subdomains (e.g., 32 or more), allowing the Poisson equation to be solved concurrently across distributed CPU cores or GPUs using MPI. This parallel decomposition significantly reduces computation time and forms a key component of scalable gyrokinetic plasma simulation codes for magnetic confinement fusion.**
+
+
