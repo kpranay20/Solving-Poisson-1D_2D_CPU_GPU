@@ -70,7 +70,7 @@ poisson-fem/
     ├── cuda_info.txt
     └── petsc_config.txt
 ```
-## Motivation and Goal
+## Motivation
 
 Many finite element formulations produce large sparse linear systems that become computationally expensive as the problem size increases. While dense matrix implementations could be used for small-scale problems, scientific simulations works with sparse storage formats and parallel algorithms to efficiently use new-age computing hardware.
 
